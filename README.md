@@ -1,5 +1,7 @@
 # Lumbago Core
 
+[A short introduction to Lumbago](https://bennett-bernard.github.io/luca-core/).
+
 Lumbago Core is the foundational library for the open-source Lumbago accounting
 framework. It represents accounting transactions in a minimal form while
 enforcing strong data validation.
@@ -192,6 +194,9 @@ never use a production database. The test user must be allowed to create
 schemas. CI runs the contracts against memory, both SQLite modes, and a real
 PostgreSQL 17 service. Generated databases, `output/`, and `dist/` (including
 review audio) are ignored by Git.
+
+GitHub Pages publishes `docs/index.html` from the `main` branch. Changes to
+that page are published automatically. `docs/.nojekyll` keeps it as plain HTML.
 
 ## License
 

@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="What Lumbago Core does, who it is for, and how it records accounting transactions in Python.">
+    <title>Lumbago Core</title>
+    <style>
+      html {
+        color: #222;
+        background: #fff;
+        font-family: system-ui, sans-serif;
+        font-size: 100%;
+        line-height: 1.65;
+      }
+
+      body {
+        max-width: 42rem;
+        margin: 0 auto;
+        padding: 2.5rem 1.25rem;
+      }
+
+      h1 {
+        margin: 0 0 1.5rem;
+        font-size: 2rem;
+        line-height: 1.2;
+      }
+
+      p {
+        margin: 0 0 1.25rem;
+      }
+
+      a {
+        color: #154fb0;
+        text-underline-offset: 0.18em;
+      }
+
+      a:focus-visible {
+        outline: 2px solid currentColor;
+        outline-offset: 4px;
+      }
+
+      footer {
+        margin-top: 2rem;
+        padding-top: 1rem;
+        border-top: 1px solid #ddd;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Lumbago Core</h1>
+
+      <p>
+        Lumbago is a Python library for recording accounting transactions.
+        It provides code for accounts, journals, transactions, and storing
+        those records.
+      </p>
+
+      <p>
+        It is for people building accounting tools in Python. You might use it
+        in a small script to record transactions or inside a larger application.
+        You write the parts that collect the data and decide what to do with it.
+      </p>
+
+      <p>
+        Your code creates accounts, then puts each transaction in a journal
+        entry. The entry contains a date, a description, and the amounts to debit
+        or credit. Lumbago checks that the accounts exist, that they are active,
+        and that debits equal credits for each currency.
+      </p>
+
+      <p>
+        For example, a $125 cash sale has a $125 debit to Cash and a $125 credit
+        to Sales revenue. An entry with a $125 debit and a $120 credit is rejected.
+      </p>
+
+      <p>
+        Records can stay in memory while your program runs, or be saved in a
+        SQLite or PostgreSQL database. Your code chooses when to save a group
+        of changes. Unfinished changes are rolled back. Saved journal entries
+        cannot be edited or deleted through the library; corrections use new
+        entries.
+      </p>
+
+      <p>
+        You can export transactions to a CSV file with one row for each debit
+        or credit, so a spreadsheet or another program can read them.
+      </p>
+
+      <p>
+        Lumbago is still in early development and requires Python 3.12 or newer.
+        A command-line app, user interface, and financial reports are still
+        planned.
+      </p>
+
+      <p>
+        The <a href="https://github.com/bennett-bernard/luca-core#readme">README</a>
+        has setup instructions. The
+        <a href="https://github.com/bennett-bernard/luca-core/tree/main/examples">examples</a>
+        show how to create transactions, save records, and export CSV files.
+      </p>
+    </main>
+    <footer>
+      <a href="https://github.com/bennett-bernard/luca-core">Source code</a>
+      &middot;
+      <a href="https://github.com/bennett-bernard/luca-core/blob/main/LICENSE">MIT license</a>
+    </footer>
+  </body>
+</html>
