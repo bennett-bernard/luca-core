@@ -41,7 +41,7 @@ types.
 
 ## Project status
 
-Luca is in early development. The first core slice currently provides:
+Luca is in early development. Version 0.2 implements Milestone 2 and provides:
 
 - Validated models for accounts, journals, monetary values, journal lines, and
   journal entries.
@@ -49,15 +49,34 @@ Luca is in early development. The first core slice currently provides:
   each currency.
 - Stable record identifiers, UTC-normalized timestamps, descriptive generated
   schemas, and JSON serialization.
-- Storage-neutral CRUD contracts with an in-memory implementation suitable for
-  tests and lightweight workflows.
-- Account and journal services that enforce case-insensitive code uniqueness.
-- Service-level hard deletion that records immutable audit events with deleted
-  record snapshots.
+- Storage-neutral contracts, transactional in-memory storage, and optional
+  SQLite and PostgreSQL persistence with packaged Alembic migrations.
+- Caller-owned transactions that save complete entries atomically and roll back
+  unfinished workflows.
+- Case-insensitive account and journal codes, protected historical references,
+  and atomic deletion audit snapshots for unused accounts and journals.
+- Exact, nonnegative monetary amounts with at most two decimal places, checked
+  in both the domain models and SQL storage.
+- Deterministic, one-row-per-posting CSV export with resolved account and journal
+  information.
 
-Database persistence, durable audit storage, reporting, user governance, the
-web interface, and the CLI remain planned capabilities rather than stable
-public APIs.
+Persisted entries have no draft state and cannot be updated or deleted through
+the transactional repositories. Corrections require new entries. The web
+interface, CLI, user governance, financial reports, and other SQL dialects are
+still planned capabilities. This is an early library API, not a complete
+accounting application.
+
+## Installation
+
+Python 3.12 or newer is required. SQL dependencies remain optional:
+
+```console
+pip install luca-core               # Models, memory storage, and CSV
+pip install 'luca-core[sql]'        # Also SQLite and migrations
+pip install 'luca-core[postgres]'   # Also PostgreSQL with psycopg
+```
+
+For an unpublished checkout, use `uv sync --all-extras` instead.
 
 ## Core model example
 
@@ -95,7 +114,59 @@ entry = JournalEntry(
 ```
 
 Unbalanced entries, zero-value lines, invalid currency codes, unknown fields,
-and naive audit timestamps are rejected during validation.
+and naive audit timestamps are rejected during validation. Pass monetary values
+as `Decimal`, decimal strings, or integers, not binary floats. Values with
+fractional hundredths such as `"12.345"` are rejected, not rounded; harmless
+trailing zeros such as `"12.3400"` normalize to `"12.34"`. The maximum monetary
+amount is `9999999999999999.99`. These are intentional changes from 0.1.
+
+## Durable persistence and export
+
+Create a store, migrate explicitly, and commit each successful workflow:
+
+```python
+from luca import (
+    Account,
+    AccountType,
+    AccountingService,
+    export_postings_csv,
+    project_postings,
+)
+from luca.persistence.sqlalchemy import SqlAlchemyStore
+from pathlib import Path
+
+store = SqlAlchemyStore("sqlite+pysqlite:///luca.db")
+try:
+    store.migrate()  # Explicit schema upgrade, never an automatic startup action
+    with store.unit_of_work() as uow:
+        service = AccountingService(uow)
+        service.create_account(
+            Account(code="CASH", name="Cash", account_type=AccountType.ASSET)
+        )
+        uow.commit()  # No commit means rollback on exit
+
+    with store.unit_of_work() as uow:
+        rows = project_postings(
+            uow.journal_entries.list(), uow.accounts.list(), uow.journals.list()
+        )
+    Path("output").mkdir(exist_ok=True)
+    with open("output/postings.csv", "w", encoding="utf-8", newline="") as output:
+        export_postings_csv(rows, output)
+finally:
+    store.close()
+```
+
+Use a fresh database for this short example; running it twice rejects duplicate
+`CASH`. The complete, rerunnable [persistence example](examples/05_persistence_and_csv.py)
+creates a balanced sale, reopens storage, demonstrates deletion protection and
+audit events, and exports the resulting postings. Replace the URL with
+`postgresql+psycopg://...` to use PostgreSQL.
+
+See [persistence decisions and operations](docs/persistence.md) for the exact
+transaction, precision, migration, subclassing, CSV, and concurrency contracts.
+Use `InMemoryStore` for the same transactional API without a database. The
+original standalone `InMemoryRepository` remains available with its legacy,
+nontransactional behavior.
 
 More runnable walkthroughs are available in [`examples/`](examples/README.md),
 including validation failures, audited deletion, and model subclassing.
@@ -106,12 +177,21 @@ Install the locked development environment and run the quality checks with
 `uv`:
 
 ```console
-uv sync
-uv run ruff check .
-uv run mypy src
-uv run pytest
+uv sync --locked --all-extras
+uv run --all-extras ruff check .
+uv run --all-extras ruff format --check .
+uv run --all-extras mypy src
+uv run --all-extras pytest --cov=luca --cov-branch --cov-fail-under=100
+uv lock --check
 uv build
 ```
+
+PostgreSQL tests skip unless `LUCA_TEST_POSTGRES_URL` points to a disposable
+PostgreSQL database. Tests create and remove uniquely named schemas there;
+never use a production database. The test user must be allowed to create
+schemas. CI runs the contracts against memory, both SQLite modes, and a real
+PostgreSQL 17 service. Generated databases, `output/`, and `dist/` (including
+review audio) are ignored by Git.
 
 ## License
 

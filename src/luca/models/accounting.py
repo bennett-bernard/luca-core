@@ -2,7 +2,6 @@
 
 from collections import defaultdict
 from datetime import date
-from decimal import Decimal
 from enum import StrEnum
 from typing import Self
 from uuid import UUID, uuid4
@@ -194,11 +193,11 @@ class JournalEntry(BaseTransaction):
         if len(line_ids) != len(set(line_ids)):
             raise ValueError("journal entry line identifiers must be unique")
 
-        totals: dict[str, dict[EntrySide, Decimal]] = defaultdict(
-            lambda: {EntrySide.DEBIT: Decimal(0), EntrySide.CREDIT: Decimal(0)}
+        totals: dict[str, dict[EntrySide, int]] = defaultdict(
+            lambda: {EntrySide.DEBIT: 0, EntrySide.CREDIT: 0}
         )
         for line in self.lines:
-            totals[line.amount.currency][line.side] += line.amount.amount
+            totals[line.amount.currency][line.side] += line.amount.minor_units
 
         unbalanced = [
             currency

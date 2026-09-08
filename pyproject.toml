@@ -1,6 +1,6 @@
 [project]
 name = "luca-core"
-version = "0.1.0"
+version = "0.2.0"
 description = "Foundational accounting library for the Luca framework"
 readme = "README.md"
 authors = [
@@ -10,6 +10,10 @@ requires-python = ">=3.12"
 dependencies = [
     "pydantic>=2.13.4,<3",
 ]
+
+[project.optional-dependencies]
+sql = ["sqlalchemy>=2.0.43,<3", "alembic>=1.16,<2"]
+postgres = ["luca-core[sql]", "psycopg[binary]>=3.2,<4"]
 
 [build-system]
 requires = ["uv_build>=0.12.5,<0.13.0"]
@@ -29,6 +33,7 @@ dev = [
 [tool.pytest.ini_options]
 addopts = ["--strict-config", "--strict-markers"]
 testpaths = ["tests"]
+markers = ["postgres: requires LUCA_TEST_POSTGRES_URL pointing at a disposable database"]
 
 [tool.coverage.run]
 branch = true

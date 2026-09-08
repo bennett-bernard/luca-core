@@ -43,3 +43,23 @@ class InvalidUpdateError(LucaError):
         self.fields = frozenset(fields)
         names = ", ".join(sorted(fields))
         super().__init__(f"update cannot change Luca-managed fields: {names}")
+
+
+class ReferencedRecordError(LucaError):
+    """Raised when deletion would remove a referenced accounting record."""
+
+
+class ImmutableEntryError(LucaError):
+    """Raised when attempting to update or delete a persisted journal entry."""
+
+
+class InactiveAccountError(LucaError):
+    """Raised when a new posting references an inactive account."""
+
+
+class StorageError(LucaError):
+    """A storage failure reported without SQL parameters or credentials."""
+
+
+class UnitOfWorkError(LucaError):
+    """Raised for operations outside an active, uncommitted unit of work."""

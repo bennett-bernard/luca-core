@@ -2,30 +2,61 @@
 
 ## Project Structure & Module Organization
 
-This repository is currently a bootstrap project: the only existing project file is the root-level `LICENSE`. Keep repository-wide files such as `README.md`, build manifests, and configuration at the root. When implementation begins, prefer a conventional layout: application code in `src/`, automated tests in `tests/` (or beside source files when the chosen framework expects that), and static resources in `assets/`. Keep generated output, dependency caches, and local environment files out of version control.
+Luca is a Python 3.12+ library using a `src/` layout. Public Pydantic models live
+in `src/luca/models/`, workflows in `services/`, storage contracts in
+`repositories/`, transactional adapters in `persistence/`, and posting/CSV
+adapters in `exports/`. SQLAlchemy rows are private implementation details.
+Versioned migrations are packaged under
+`src/luca/persistence/sqlalchemy/migrations/` so installed wheels can migrate.
+Keep tests under `tests/`, runnable walkthroughs under `examples/`, and longer
+design/operation notes under `docs/`. Root files contain project configuration.
 
 ## Build, Test, and Development Commands
 
-No build system, package manager, or test runner is configured yet. These commands are useful for validating changes now:
+- `uv sync --locked --all-extras` — install the complete development environment.
+- `uv run --all-extras ruff check .` — lint source, tests, and examples.
+- `uv run --all-extras ruff format --check .` — verify formatting.
+- `uv run --all-extras mypy src` — run strict library type checks.
+- `uv run --all-extras pytest --cov=luca --cov-branch --cov-fail-under=100` — run
+  tests and enforce full library statement/branch coverage.
+- `uv lock --check` and `uv build` — validate dependencies and build distributions.
+- `git status --short`, `git diff --check`, and `rg --files` — inspect changes.
 
-- `git status --short` — review staged, unstaged, and untracked files.
-- `git diff --check` — detect whitespace errors before committing.
-- `rg --files` — list tracked and unignored project files quickly.
-
-When adding tooling, expose predictable commands such as `npm run build`, `npm test`, or `make test`, and document them in both this file and the project README.
+PostgreSQL integration tests require `LUCA_TEST_POSTGRES_URL` for a disposable
+database whose user can create schemas. Tests remove only their own uniquely
+named schemas. Without this variable PostgreSQL tests skip; do not describe
+that as PostgreSQL validation. Never test against production data.
 
 ## Coding Style & Naming Conventions
 
-Follow the standard formatter and linter for the language introduced; commit their configuration with the first source files. Use UTF-8, LF line endings, and a trailing newline. Prefer descriptive names: `snake_case` for files unless an ecosystem convention differs, and verbs for functions that perform actions. Keep modules focused and avoid committing generated files unless they are required release artifacts.
+Use UTF-8, LF endings, trailing newlines, descriptive `snake_case` names, and
+Ruff's configured formatting and lint rules. Library code is strictly typed.
+Keep optional SQL dependencies out of the top-level `luca` import. Domain
+models must not depend on ORM rows, sessions, or lazy relationships. Services
+and repositories never commit: callers own unit-of-work boundaries.
 
 ## Testing Guidelines
 
-There is currently no test framework or coverage threshold. New features should include automated tests once a framework is selected, and bug fixes should include a regression test. Mirror source structure under `tests/` and use recognizable names such as `test_<feature>.py` or `<feature>.test.ts`. Ensure the full test command passes locally before opening a pull request.
+Include regression tests for fixes and shared contract tests for adapter
+behavior. Exercise memory, in-memory SQLite, file-backed SQLite, and real
+PostgreSQL. Check rollback and injected failure paths, not just happy paths.
+Migration tests must upgrade from empty, compare against the ORM schema, and
+round-trip downgrade/upgrade using disposable databases. Treat applied migration
+revisions as immutable; future schema changes require new revisions.
 
 ## Commit & Pull Request Guidelines
 
-Git history currently contains only `Initial commit`, so no formal convention is established. Use concise, imperative, sentence-case subjects (for example, `Add configuration loader`) and keep each commit focused. Pull requests should explain what changed and why, list validation performed, and link relevant issues. Include screenshots or terminal output when behavior or user-facing output changes.
+Use concise, imperative, sentence-case subjects and keep commits focused.
+Explain what changed and why, list actual validation performed, and link relevant
+issues. Preserve unrelated local changes and user comments in planning files.
+Do not commit or push unless requested.
 
 ## Security & Configuration
 
-Never commit credentials, tokens, private keys, or populated environment files. Add local configuration patterns to `.gitignore` before introducing them, and provide sanitized examples such as `.env.example` when configuration becomes necessary.
+Never commit credentials, tokens, private keys, populated environment files,
+generated databases, or review audio. `output/` and `dist/` are ignored. Add local
+configuration patterns to `.gitignore` before introducing them; provide sanitized
+examples where useful. Use explicit database URLs from application configuration
+and opt-in migration commands. SQL logging is off by default and bind parameters
+are hidden. Database constraints supplement, but do not replace, validated and
+audited application workflows.

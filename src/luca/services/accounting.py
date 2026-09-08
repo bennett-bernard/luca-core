@@ -46,7 +46,7 @@ class AccountService(CrudService[Account]):
             existing = self.retrieve(record_id)
             values = existing.model_dump(mode="python")
             values.update(changes)
-            candidate = Account.model_validate(values)
+            candidate = type(existing).model_validate(values)
             _require_unique_code(
                 "Account",
                 self.list(),
@@ -72,7 +72,7 @@ class JournalService(CrudService[Journal]):
             existing = self.retrieve(record_id)
             values = existing.model_dump(mode="python")
             values.update(changes)
-            candidate = Journal.model_validate(values)
+            candidate = type(existing).model_validate(values)
             _require_unique_code(
                 "Journal",
                 self.list(),
