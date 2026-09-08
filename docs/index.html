@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="What Lumbago Core does, who it is for, and how it records accounting transactions in Python.">
-    <title>Lumbago Core</title>
+    <meta name="description" content="Lumbago is a project for Python accounting libraries. Its core library uses shared base classes for accounts, journals, and transactions.">
+    <title>Lumbago</title>
     <style>
       html {
         color: #222;
@@ -26,8 +26,17 @@
         line-height: 1.2;
       }
 
-      p {
+      p,
+      ul {
         margin: 0 0 1.25rem;
+      }
+
+      ul {
+        padding-left: 1.5rem;
+      }
+
+      li + li {
+        margin-top: 0.5rem;
       }
 
       a {
@@ -49,12 +58,12 @@
   </head>
   <body>
     <main>
-      <h1>Lumbago Core</h1>
+      <h1>Lumbago</h1>
 
       <p>
-        Lumbago is a Python library for recording accounting transactions.
-        It provides code for accounts, journals, transactions, and storing
-        those records.
+        Lumbago is the overall project for a family of Python accounting
+        libraries. <code>lumbago-core</code> handles accounts, journals,
+        transactions, and storing those records.
       </p>
 
       <p>
@@ -63,11 +72,27 @@
         You write the parts that collect the data and decide what to do with it.
       </p>
 
+      <p>The core library follows three basic ideas:</p>
+      <ul>
+        <li>
+          Represent accounts, money, and transactions as Python objects built
+          from a few shared base classes.
+        </li>
+        <li>
+          Extend those classes with your own fields and methods, while keeping
+          the existing validation rules.
+        </li>
+        <li>
+          Keep accounting objects separate from storage, so the same objects
+          can be used in memory or with a database.
+        </li>
+      </ul>
+
       <p>
         Your code creates accounts, then puts each transaction in a journal
         entry. The entry contains a date, a description, and the amounts to debit
-        or credit. Lumbago checks that the accounts exist, that they are active,
-        and that debits equal credits for each currency.
+        or credit. The core library checks that the accounts exist, that they
+        are active, and that debits equal credits for each currency.
       </p>
 
       <p>
@@ -89,20 +114,21 @@
       </p>
 
       <p>
-        Lumbago is still in early development and requires Python 3.12 or newer.
-        A command-line app, user interface, and financial reports are still
-        planned.
+        The core library is still in early development and requires Python
+        3.12 or newer. A command-line app, user interface, and financial reports
+        are still planned.
       </p>
 
       <p>
-        The <a href="https://github.com/bennett-bernard/luca-core#readme">README</a>
+        The core library's
+        <a href="https://github.com/bennett-bernard/luca-core#readme">README</a>
         has setup instructions. The
         <a href="https://github.com/bennett-bernard/luca-core/tree/main/examples">examples</a>
         show how to create transactions, save records, and export CSV files.
       </p>
     </main>
     <footer>
-      <a href="https://github.com/bennett-bernard/luca-core">Source code</a>
+      <a href="https://github.com/bennett-bernard/luca-core">Core library source code</a>
       &middot;
       <a href="https://github.com/bennett-bernard/luca-core/blob/main/LICENSE">MIT license</a>
     </footer>
