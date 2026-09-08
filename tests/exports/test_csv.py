@@ -6,13 +6,13 @@ from uuid import UUID
 
 import pytest
 
-from luca import (
+from lumbago import (
     AccountingService,
     RecordNotFoundError,
     export_postings_csv,
     project_postings,
 )
-from luca.exports import CSV_COLUMNS, CSV_FORMAT
+from lumbago.exports import CSV_COLUMNS, CSV_FORMAT
 from tests.conftest import Store
 from tests.helpers import account, entry, journal
 
@@ -42,7 +42,7 @@ def test_persisted_postings_export_on_every_backend(store: Store) -> None:
     assert data[0]["account_name"] == "Cash, operating"
     assert data[0]["reference"] == "" and data[0]["amount"] == "125.00"
     assert data[1]["line_metadata"] == '{"customer":"Acme Corp","z":"élève"}'
-    assert CSV_FORMAT == "luca-postings-v1"
+    assert CSV_FORMAT == "lumbago-postings-v1"
 
 
 def test_csv_golden_output_and_explicit_order() -> None:

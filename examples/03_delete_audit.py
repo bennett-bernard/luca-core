@@ -1,6 +1,6 @@
 """Hard-delete a record while retaining its audit event."""
 
-from luca import (
+from lumbago import (
     Account,
     AccountService,
     AccountType,

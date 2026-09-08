@@ -6,8 +6,8 @@ from uuid import uuid4
 import pytest
 from pydantic import ValidationError
 
-from luca import EntrySide, JournalEntry, Money
-from luca.models.money import (
+from lumbago import EntrySide, JournalEntry, Money
+from lumbago.models.money import (
     MAX_AMOUNT,
     MAX_MINOR_UNITS,
     from_minor_units,

@@ -6,8 +6,8 @@ from alembic.config import Config
 from alembic.migration import MigrationContext
 from sqlalchemy import inspect
 
-from luca.persistence.sqlalchemy import SqlAlchemyStore
-from luca.persistence.sqlalchemy.base import Base
+from lumbago.persistence.sqlalchemy import SqlAlchemyStore
+from lumbago.persistence.sqlalchemy.base import Base
 
 
 def test_upgrade_downgrade_and_schema_parity(sql_store: SqlAlchemyStore) -> None:

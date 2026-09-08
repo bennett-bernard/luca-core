@@ -4,7 +4,7 @@ from uuid import uuid4
 
 import pytest
 
-from luca import (
+from lumbago import (
     Account,
     AccountService,
     AccountType,

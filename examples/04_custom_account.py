@@ -2,7 +2,7 @@
 
 from pydantic import Field, ValidationError
 
-from luca import Account, AccountType, CrudService, InMemoryRepository
+from lumbago import Account, AccountType, CrudService, InMemoryRepository
 
 
 class DepartmentAccount(Account):

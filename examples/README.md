@@ -22,7 +22,7 @@ saved entry to CSV. Each run adds one entry and two deletion audit events.
 The database and uniquely named CSV files go under Git-ignored
 `output/milestone2/`. Use `--output-dir /path/to/scratch` to select another output
 directory. No earlier CSV is overwritten. To run the same example against
-PostgreSQL, install the `postgres` extra and set `LUCA_DATABASE_URL` to a database
+PostgreSQL, install the `postgres` extra and set `LUMBAGO_DATABASE_URL` to a database
 you intend to populate with demo data. Do not use a production database or
 commit credentials. PostgreSQL URLs use `postgresql+psycopg://...`.
 

@@ -6,7 +6,7 @@ from uuid import UUID, uuid4
 import pytest
 from pydantic import ValidationError
 
-from luca import (
+from lumbago import (
     Account,
     AccountingService,
     AuditAction,
@@ -67,7 +67,7 @@ def test_declared_subclass_fields_survive_storage(
         project_code: str
 
     store = store_factory(account_type=ProjectAccount)
-    record = ProjectAccount(**account().model_dump(), project_code="LUCA")
+    record = ProjectAccount(**account().model_dump(), project_code="LUMBAGO")
     with store.unit_of_work() as uow:
         service = AccountingService(uow)
         service.create_account(record)

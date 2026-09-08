@@ -6,7 +6,7 @@ from uuid import UUID, uuid4
 import pytest
 from pydantic import ValidationError
 
-from luca import (
+from lumbago import (
     Account,
     AccountType,
     CrudService,
@@ -81,10 +81,10 @@ def test_repository_preserves_declared_subclass_fields() -> None:
         code="1000",
         name="Project Cash",
         account_type=AccountType.ASSET,
-        project_code="LUCA",
+        project_code="LUMBAGO",
     )
 
-    assert repository.create(account).project_code == "LUCA"
+    assert repository.create(account).project_code == "LUMBAGO"
     assert repository.retrieve(account.id) == account
 
 

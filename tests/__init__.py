@@ -1,1 +1,1 @@
-"""Luca regression and persistence contract tests."""
+"""Lumbago regression and persistence contract tests."""

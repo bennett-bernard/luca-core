@@ -1,15 +1,15 @@
-# Luca Core
+# Lumbago Core
 
-Luca Core is the foundational library for the open-source Luca accounting
+Lumbago Core is the foundational library for the open-source Lumbago accounting
 framework. It represents accounting transactions in a minimal form while
 enforcing strong data validation.
 
 The project aims to provide low-level scaffolding for defining basic
 transactions using the lowest common denominator of accounting data. Its
-simplicity is intentional: Luca is designed to be easy to understand, extend,
+simplicity is intentional: Lumbago is designed to be easy to understand, extend,
 and adapt without forcing every use case into a complex accounting system.
 
-Luca's code and data structures are intended to be readable by both people and
+Lumbago's code and data structures are intended to be readable by both people and
 AI agents. This gives accounting professionals a foundation for building
 bespoke tools and systems without repeatedly reinventing core transaction
 types.
@@ -41,7 +41,7 @@ types.
 
 ## Project status
 
-Luca is in early development. Version 0.2 implements Milestone 2 and provides:
+Lumbago is in early development. Version 0.2 implements Milestone 2 and provides:
 
 - Validated models for accounts, journals, monetary values, journal lines, and
   journal entries.
@@ -71,9 +71,9 @@ accounting application.
 Python 3.12 or newer is required. SQL dependencies remain optional:
 
 ```console
-pip install luca-core               # Models, memory storage, and CSV
-pip install 'luca-core[sql]'        # Also SQLite and migrations
-pip install 'luca-core[postgres]'   # Also PostgreSQL with psycopg
+pip install lumbago-core               # Models, memory storage, and CSV
+pip install 'lumbago-core[sql]'        # Also SQLite and migrations
+pip install 'lumbago-core[postgres]'   # Also PostgreSQL with psycopg
 ```
 
 For an unpublished checkout, use `uv sync --all-extras` instead.
@@ -85,7 +85,7 @@ from datetime import date
 from decimal import Decimal
 from uuid import uuid4
 
-from luca import EntrySide, JournalEntry, JournalLine, Money
+from lumbago import EntrySide, JournalEntry, JournalLine, Money
 
 cash_account_id = uuid4()
 revenue_account_id = uuid4()
@@ -125,17 +125,17 @@ amount is `9999999999999999.99`. These are intentional changes from 0.1.
 Create a store, migrate explicitly, and commit each successful workflow:
 
 ```python
-from luca import (
+from lumbago import (
     Account,
     AccountType,
     AccountingService,
     export_postings_csv,
     project_postings,
 )
-from luca.persistence.sqlalchemy import SqlAlchemyStore
+from lumbago.persistence.sqlalchemy import SqlAlchemyStore
 from pathlib import Path
 
-store = SqlAlchemyStore("sqlite+pysqlite:///luca.db")
+store = SqlAlchemyStore("sqlite+pysqlite:///lumbago.db")
 try:
     store.migrate()  # Explicit schema upgrade, never an automatic startup action
     with store.unit_of_work() as uow:
@@ -181,12 +181,12 @@ uv sync --locked --all-extras
 uv run --all-extras ruff check .
 uv run --all-extras ruff format --check .
 uv run --all-extras mypy src
-uv run --all-extras pytest --cov=luca --cov-branch --cov-fail-under=100
+uv run --all-extras pytest --cov=lumbago --cov-branch --cov-fail-under=100
 uv lock --check
 uv build
 ```
 
-PostgreSQL tests skip unless `LUCA_TEST_POSTGRES_URL` points to a disposable
+PostgreSQL tests skip unless `LUMBAGO_TEST_POSTGRES_URL` points to a disposable
 PostgreSQL database. Tests create and remove uniquely named schemas there;
 never use a production database. The test user must be allowed to create
 schemas. CI runs the contracts against memory, both SQLite modes, and a real
@@ -195,4 +195,4 @@ review audio) are ignored by Git.
 
 ## License
 
-Luca is available under the [MIT License](LICENSE).
+Lumbago is available under the [MIT License](LICENSE).

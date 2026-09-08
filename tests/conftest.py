@@ -10,8 +10,8 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.engine import make_url
 
-from luca import InMemoryStore
-from luca.persistence.sqlalchemy import SqlAlchemyStore
+from lumbago import InMemoryStore
+from lumbago.persistence.sqlalchemy import SqlAlchemyStore
 from tests.helpers import UPDATED
 
 type Store = InMemoryStore | SqlAlchemyStore
@@ -19,8 +19,8 @@ type Store = InMemoryStore | SqlAlchemyStore
 
 @pytest.fixture(params=["memory", "sqlite_memory", "sqlite_file", "postgres"])
 def backend(request: pytest.FixtureRequest) -> str:
-    if request.param == "postgres" and not os.environ.get("LUCA_TEST_POSTGRES_URL"):
-        pytest.skip("set LUCA_TEST_POSTGRES_URL to run real PostgreSQL contracts")
+    if request.param == "postgres" and not os.environ.get("LUMBAGO_TEST_POSTGRES_URL"):
+        pytest.skip("set LUMBAGO_TEST_POSTGRES_URL to run real PostgreSQL contracts")
     return str(request.param)
 
 
@@ -32,8 +32,8 @@ def store_factory(backend: str, tmp_path: Path) -> Iterator[Callable[..., Store]
         if backend == "memory":
             return InMemoryStore(clock=lambda: UPDATED, **options)
         if backend == "postgres":
-            url = make_url(os.environ["LUCA_TEST_POSTGRES_URL"])
-            schema = "luca_test_" + uuid4().hex
+            url = make_url(os.environ["LUMBAGO_TEST_POSTGRES_URL"])
+            schema = "lumbago_test_" + uuid4().hex
             admin = create_engine(url, hide_parameters=True)
             with admin.begin() as connection:
                 connection.exec_driver_sql(f'CREATE SCHEMA "{schema}"')

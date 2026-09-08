@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="Interactive visual plan for Luca Milestone 2: relational persistence and CSV export."
+      content="Interactive visual plan for Lumbago Milestone 2: relational persistence and CSV export."
     />
-    <title>Luca Milestone 2 · Interactive Plan</title>
+    <title>Lumbago Milestone 2 · Interactive Plan</title>
     <style>
       :root {
         color-scheme: dark;
@@ -1181,9 +1181,9 @@
 
     <header class="shell">
       <div class="topbar">
-        <a class="brand" href="#overview" aria-label="Luca Milestone 2 overview">
+        <a class="brand" href="#overview" aria-label="Lumbago Milestone 2 overview">
           <span class="brand-mark">L2</span>
-          <span>Luca Core · Milestone 2</span>
+          <span>Lumbago Core · Milestone 2</span>
         </a>
         <div class="top-actions">
           <a class="button" href="MILESTONE_2_PLAN.md">Read detailed plan</a>
@@ -1207,7 +1207,7 @@
           <span class="eyebrow">Proposed roadmap · August 2026</span>
           <h1 id="page-title">Durable data in. Useful data out.</h1>
           <p class="hero-copy">
-            Prove Luca's storage boundary with SQLAlchemy, SQLite, PostgreSQL,
+            Prove Lumbago's storage boundary with SQLAlchemy, SQLite, PostgreSQL,
             transactional audit behavior, and a stable one-row-per-posting CSV export.
           </p>
           <div class="tag-row" aria-label="Milestone themes">
@@ -1739,7 +1739,7 @@
 
     <footer>
       <div class="shell">
-        <span>Luca Core · Milestone 2 interactive planning artifact</span>
+        <span>Lumbago Core · Milestone 2 interactive planning artifact</span>
         <span>
           <a href="MILESTONE_2_PLAN.md">Detailed Markdown</a>
           ·
@@ -1796,7 +1796,7 @@
           deliverables: [
             "Implement explicit domain/row mappers.",
             "Implement account, journal, journal-entry, and audit repositories.",
-            "Map database integrity errors to Luca domain errors.",
+            "Map database integrity errors to Lumbago domain errors.",
           ],
           exit: "The shared repository contract and exact field round trips pass against SQLite.",
         },
@@ -1854,7 +1854,7 @@
         callers: {
           kicker: "Outside the core",
           title: "Callers choose intent",
-          body: "Python users—and later the CLI or web layer—ask Luca to perform operations. They work with public Pydantic models and never manage SQLAlchemy sessions directly.",
+          body: "Python users—and later the CLI or web layer—ask Lumbago to perform operations. They work with public Pydantic models and never manage SQLAlchemy sessions directly.",
         },
         services: {
           kicker: "Application boundary",
@@ -1908,7 +1908,7 @@
           service: "Easy initially, but concurrent writers can bypass the check and create duplicates.",
         },
         runtime: {
-          sync: "Matches Luca's current API and initial script/CLI use cases with the smallest transaction surface.",
+          sync: "Matches Lumbago's current API and initial script/CLI use cases with the smallest transaction surface.",
           async: "Useful for some servers, but doubles early adapter and test complexity without a demonstrated workload.",
         },
         csv: {
@@ -2063,7 +2063,7 @@
       });
 
       function loadDecisions() {
-        return { ...defaults, ...storage.get("luca-m2-decisions", {}) };
+        return { ...defaults, ...storage.get("lumbago-m2-decisions", {}) };
       }
 
       function renderDecisions(selections = loadDecisions()) {
@@ -2079,7 +2079,7 @@
             summary.textContent = decisionCopy[decision][choice];
           }
         });
-        storage.set("luca-m2-decisions", selections);
+        storage.set("lumbago-m2-decisions", selections);
       }
 
       document.querySelectorAll(".choice").forEach((choice) => {
@@ -2096,7 +2096,7 @@
 
       function renderChecks() {
         const container = document.getElementById("checkGroups");
-        const completed = new Set(storage.get("luca-m2-checks", []));
+        const completed = new Set(storage.get("lumbago-m2-checks", []));
         let offset = 0;
         checks.forEach((group) => {
           const section = document.createElement("section");
@@ -2121,7 +2121,7 @@
         const completed = [...document.querySelectorAll("[data-check]:checked")].map(
           (input) => input.dataset.check,
         );
-        storage.set("luca-m2-checks", completed);
+        storage.set("lumbago-m2-checks", completed);
         updateProgress();
       }
 
@@ -2145,7 +2145,7 @@
 
       function applyTheme(theme) {
         document.documentElement.dataset.theme = theme;
-        storage.set("luca-m2-theme", theme);
+        storage.set("lumbago-m2-theme", theme);
         document.getElementById("themeButton").setAttribute(
           "aria-label",
           theme === "dark" ? "Switch to light theme" : "Switch to dark theme",
@@ -2162,7 +2162,7 @@
       selectArchitecture("callers");
       renderDecisions();
       renderChecks();
-      applyTheme(storage.get("luca-m2-theme", "dark"));
+      applyTheme(storage.get("lumbago-m2-theme", "dark"));
       activateTab(location.hash.slice(1) || "overview", false, false);
     </script>
   </body>

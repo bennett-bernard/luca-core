@@ -60,7 +60,7 @@ round-trip to validated public models.
 ## Store and unit-of-work API
 
 ```python
-from luca import AccountingService, InMemoryStore
+from lumbago import AccountingService, InMemoryStore
 
 store = InMemoryStore()
 with store.unit_of_work() as uow:
@@ -70,7 +70,7 @@ with store.unit_of_work() as uow:
     uow.commit()
 ```
 
-For SQL, import `SqlAlchemyStore` from `luca.persistence.sqlalchemy`, construct it
+For SQL, import `SqlAlchemyStore` from `lumbago.persistence.sqlalchemy`, construct it
 with a URL, call `store.migrate()` explicitly when appropriate, and close it when
 finished. Supported URLs are `sqlite:///...`, `sqlite+pysqlite:///...`, and
 `postgresql+psycopg://...`; SQLite memory uses `sqlite+pysqlite:///:memory:`.
@@ -133,15 +133,15 @@ The stores accept configured subclasses and keep their declared fields in a
 separate `extensions` JSON column, without hiding them in user `metadata`:
 
 ```python
-from luca import Account
-from luca.persistence.sqlalchemy import SqlAlchemyStore
+from lumbago import Account
+from lumbago.persistence.sqlalchemy import SqlAlchemyStore
 
 
 class DepartmentAccount(Account):
     department: str
 
 
-store = SqlAlchemyStore("sqlite+pysqlite:///luca.db", account_type=DepartmentAccount)
+store = SqlAlchemyStore("sqlite+pysqlite:///lumbago.db", account_type=DepartmentAccount)
 ```
 
 Use the same compatible `account_type`, `journal_type`, and `entry_type` when
@@ -161,8 +161,8 @@ is safe. Existing 0.1 in-memory records are not automatically imported.
 From this repository, the equivalent command is:
 
 ```console
-LUCA_DATABASE_URL=sqlite+pysqlite:///luca.db uv run --extra sql alembic upgrade head
-LUCA_DATABASE_URL=sqlite+pysqlite:///luca.db uv run --extra sql alembic current
+LUMBAGO_DATABASE_URL=sqlite+pysqlite:///lumbago.db uv run --extra sql alembic upgrade head
+LUMBAGO_DATABASE_URL=sqlite+pysqlite:///lumbago.db uv run --extra sql alembic current
 ```
 
 Supply PostgreSQL connection details through protected application/environment
@@ -178,7 +178,7 @@ Migration scripts live inside the Python package, not a repository-only
 live ORM row classes, and are tested for upgrade, downgrade, and ORM parity on
 both supported SQL dialects.
 
-## CSV: `luca-postings-v1`
+## CSV: `lumbago-postings-v1`
 
 `project_postings(entries, accounts, journals)` returns immutable `PostingRow`
 models, one per journal line. It resolves the **current** account and journal

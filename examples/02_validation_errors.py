@@ -1,4 +1,4 @@
-"""Trigger representative Luca validation and business-rule errors."""
+"""Trigger representative Lumbago validation and business-rule errors."""
 
 from datetime import date
 from decimal import Decimal
@@ -6,7 +6,7 @@ from uuid import uuid4
 
 from pydantic import ValidationError
 
-from luca import (
+from lumbago import (
     Account,
     AccountService,
     AccountType,

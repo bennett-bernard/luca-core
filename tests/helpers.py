@@ -3,7 +3,7 @@
 from datetime import UTC, date, datetime
 from uuid import UUID, uuid4
 
-from luca import (
+from lumbago import (
     Account,
     AccountType,
     EntrySide,

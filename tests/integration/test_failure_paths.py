@@ -12,17 +12,17 @@ from sqlalchemy import event
 from sqlalchemy.dialects import sqlite
 from sqlalchemy.exc import OperationalError
 
-from luca import (
+from lumbago import (
     AccountingService,
     DuplicateCodeError,
     InMemoryStore,
     StorageError,
     UnitOfWorkError,
 )
-from luca.persistence.sqlalchemy import SqlAlchemyStore
-from luca.persistence.sqlalchemy.base import UTCDateTime, WholeHundredths
-from luca.persistence.sqlalchemy.engine import create_luca_engine
-from luca.persistence.sqlalchemy.models import AccountRow
+from lumbago.persistence.sqlalchemy import SqlAlchemyStore
+from lumbago.persistence.sqlalchemy.base import UTCDateTime, WholeHundredths
+from lumbago.persistence.sqlalchemy.engine import create_lumbago_engine
+from lumbago.persistence.sqlalchemy.models import AccountRow
 from tests.conftest import Store
 from tests.helpers import account, entry, journal
 
@@ -49,7 +49,7 @@ def test_type_codecs_reject_corruption_and_naive_times() -> None:
 )
 def test_bad_configuration_does_not_expose_url(url: str) -> None:
     with pytest.raises(StorageError) as error:
-        create_luca_engine(url)
+        create_lumbago_engine(url)
     assert "secret" not in str(error.value) and url not in str(error.value)
 
 
@@ -59,9 +59,9 @@ def test_missing_driver_is_reported_without_credentials(
     def missing(*args: object, **kwargs: object) -> None:
         raise ModuleNotFoundError("driver unavailable with secret context")
 
-    monkeypatch.setattr("luca.persistence.sqlalchemy.engine.create_engine", missing)
+    monkeypatch.setattr("lumbago.persistence.sqlalchemy.engine.create_engine", missing)
     with pytest.raises(StorageError) as error:
-        create_luca_engine("postgresql+psycopg://user:secret@localhost/test")
+        create_lumbago_engine("postgresql+psycopg://user:secret@localhost/test")
     assert "secret" not in str(error.value)
 
 
@@ -72,8 +72,8 @@ class BlockSql(importlib.abc.MetaPathFinder):
         if fullname.split('.')[0] in {'sqlalchemy', 'alembic', 'psycopg'}:
             raise ImportError('optional dependency imported by core')
 sys.meta_path.insert(0, BlockSql())
-import luca
-assert luca.Money(amount='12.34', currency='USD').minor_units == 1234
+import lumbago
+assert lumbago.Money(amount='12.34', currency='USD').minor_units == 1234
 """
     subprocess.run([sys.executable, "-c", script], check=True, capture_output=True)
 

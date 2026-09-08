@@ -1,4 +1,4 @@
-"""Tests for Luca's core accounting data model."""
+"""Tests for Lumbago's core accounting data model."""
 
 from datetime import UTC, date, datetime, timedelta, timezone
 from decimal import Decimal
@@ -7,7 +7,7 @@ from uuid import UUID, uuid4
 import pytest
 from pydantic import ValidationError
 
-from luca import (
+from lumbago import (
     Account,
     AccountType,
     BaseTransaction,
@@ -183,10 +183,10 @@ def test_subclasses_can_declare_additional_fields() -> None:
         code="1000",
         name="Cash",
         account_type=AccountType.ASSET,
-        project_code="LUCA",
+        project_code="LUMBAGO",
     )
 
-    assert account.project_code == "LUCA"
+    assert account.project_code == "LUMBAGO"
 
 
 def test_journal_entry_round_trips_through_json() -> None:

@@ -4,7 +4,7 @@ from datetime import date
 from decimal import Decimal
 from uuid import uuid4
 
-from luca import (
+from lumbago import (
     Account,
     AccountService,
     AccountType,

@@ -10,9 +10,9 @@ import pytest
 from sqlalchemy import event, func, select, update
 from sqlalchemy.exc import DBAPIError
 
-from luca import AccountingService, StorageError
-from luca.persistence.sqlalchemy import SqlAlchemyStore
-from luca.persistence.sqlalchemy.models import AccountRow, EntryRow, LineRow
+from lumbago import AccountingService, StorageError
+from lumbago.persistence.sqlalchemy import SqlAlchemyStore
+from lumbago.persistence.sqlalchemy.models import AccountRow, EntryRow, LineRow
 from tests.helpers import account, entry, journal
 
 
@@ -152,7 +152,7 @@ def test_schema_is_not_created_implicitly_and_sqlite_survives_process_restart(
     _, _, _, posting = seed(store)
     store.close()
     script = (
-        "import sys; from luca.persistence.sqlalchemy import SqlAlchemyStore; "
+        "import sys; from lumbago.persistence.sqlalchemy import SqlAlchemyStore; "
         "s=SqlAlchemyStore(sys.argv[1]); "
         "u=s.unit_of_work(); u.__enter__(); print(u.journal_entries.list()[0].id); "
         "u.__exit__(); s.close()"
@@ -170,8 +170,8 @@ def test_committed_entry_is_readable_in_an_independent_process(
         pytest.skip("in-memory SQLite intentionally has no process durability")
     _, _, _, posting = seed(sql_store)
     script = (
-        "import os; from luca.persistence.sqlalchemy import SqlAlchemyStore; "
-        "s=SqlAlchemyStore(os.environ['LUCA_REOPEN_DATABASE_URL']); "
+        "import os; from lumbago.persistence.sqlalchemy import SqlAlchemyStore; "
+        "s=SqlAlchemyStore(os.environ['LUMBAGO_REOPEN_DATABASE_URL']); "
         "u=s.unit_of_work(); u.__enter__(); "
         "entry=u.journal_entries.list()[0]; "
         "print(entry.id, entry.lines[0].amount.amount); "
@@ -184,7 +184,7 @@ def test_committed_entry_is_readable_in_an_independent_process(
         check=True,
         env={
             **os.environ,
-            "LUCA_REOPEN_DATABASE_URL": sql_store._engine.url.render_as_string(
+            "LUMBAGO_REOPEN_DATABASE_URL": sql_store._engine.url.render_as_string(
                 hide_password=False
             ),
         },

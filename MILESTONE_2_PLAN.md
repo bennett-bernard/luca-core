@@ -1,4 +1,4 @@
-# Luca Milestone 2 Plan
+# Lumbago Milestone 2 Plan
 
 ## Durable relational persistence and CSV export
 
@@ -23,7 +23,7 @@ outputs remain Git-ignored.
 **Depends on:** Milestone 1 domain models, repository contracts, services, and
 audit events
 
-**Primary outcome:** Luca can persist its current accounting records safely in
+**Primary outcome:** Lumbago can persist its current accounting records safely in
 SQLite and PostgreSQL, perform multi-record workflows transactionally, and
 export a stable, spreadsheet-friendly posting view to CSV.
 
@@ -50,7 +50,7 @@ a dependable domain and query boundary, not a second persistence system.
 
 ## 2. Milestone outcomes
 
-At the end of Milestone 2, a Luca application should be able to:
+At the end of Milestone 2, a Lumbago application should be able to:
 
 - Connect to an in-memory SQLite database, a file-backed SQLite database, or a
   PostgreSQL database through configuration.
@@ -93,7 +93,7 @@ SQLAlchemy ORM row
 SQLite or PostgreSQL
 ```
 
-This separation preserves Luca's ability to support non-SQL storage adapters
+This separation preserves Lumbago's ability to support non-SQL storage adapters
 and keeps database sessions out of user code. BENNETT: WHAT ARE NON-SQL STORAGE ADAPTERS? JUST LOOKING FOR INFORMATION.
 
 ### 3.2 Put business workflows in services
@@ -169,7 +169,7 @@ be approved before the initial migration is treated as stable.
 - Persisted journal entries should not be hard-deleted through the normal
   accounting service. A later milestone can introduce voiding and reversing
   workflows.
-- Internal cleanup of an unposted/draft entry is deferred until Luca has an
+- Internal cleanup of an unposted/draft entry is deferred until Lumbago has an
   explicit posting-state model.
 - Every permitted hard deletion appends an `AuditEvent` in the same database
   transaction.
@@ -205,7 +205,7 @@ Compare these representations with SQLite and PostgreSQL round-trip tests:
 
 **Recommendation for the first spike**
 
-Start with canonical decimal text because it preserves exact Luca values on
+Start with canonical decimal text because it preserves exact Lumbago values on
 both backends without imposing an unreviewed currency scale. Treat amounts as
 domain values and perform initial balancing and totals in Python. If database
 aggregation becomes a Milestone 2 requirement, approve a fixed precision and
@@ -288,7 +288,7 @@ In-memory adapters    SQLAlchemy repositories
 ### 6.1 Proposed source layout BENNETT: PLEASE GIVE ME AN EXPLANATION FOR EACH FILE LISTED HERE. I NEED TO UNDERSTAND.
 
 ```text
-src/luca/
+src/lumbago/
     exports/
         __init__.py
         csv.py
@@ -403,7 +403,7 @@ Constraints and indexes:
 | `account_id` | Referenced account foreign key |
 | `side` | Debit or credit |
 | `amount_*` | Approved exact Decimal representation |
-| `currency` | Three-letter Luca currency code |
+| `currency` | Three-letter Lumbago currency code |
 | `description` | Optional line memo |
 | `metadata` | JSON-compatible extension data, such as customer information |
 
@@ -529,14 +529,14 @@ The exact typing can evolve, but these semantics are required:
 ### 10.1 Public configuration
 
 Provide a small configuration or factory API that accepts a SQLAlchemy database
-URL without exposing engine internals to normal Luca consumers.
+URL without exposing engine internals to normal Lumbago consumers.
 
 Example URLs:
 
 ```text
 sqlite+pysqlite:///:memory:
-sqlite+pysqlite:///luca.db
-postgresql+psycopg://user:password@host:5432/luca
+sqlite+pysqlite:///lumbago.db
+postgresql+psycopg://user:password@host:5432/lumbago
 ```
 
 Configuration should support:
@@ -650,7 +650,7 @@ Required behavior:
 - Use Python's standard `csv.DictWriter`.
 - Accept any writable `TextIO` so callers can target files, memory, HTTP
   responses, or future CLI stdout.
-- Use UTF-8 when Luca opens a file itself.
+- Use UTF-8 when Lumbago opens a file itself.
 - Open files with `newline=""`.
 - Emit a stable documented header order.
 - Serialize Decimal values without floating-point conversion.
@@ -662,7 +662,7 @@ Required behavior:
 
 ### 12.4 CSV versioning
 
-Document the header as `luca-postings-v1`. The initial implementation may place
+Document the header as `lumbago-postings-v1`. The initial implementation may place
 the version in documentation rather than inside the CSV file, but incompatible
 header changes require a new named format.
 
@@ -843,7 +843,7 @@ Exit criteria:
 - Ruff lint passes.
 - Mypy strict mode passes.
 - All unit and integration tests pass.
-- Statement and branch coverage remain at 100% for Luca source unless a reviewed
+- Statement and branch coverage remain at 100% for Lumbago source unless a reviewed
   exception is documented.
 - `git diff --check` passes.
 - `uv lock --check` passes.

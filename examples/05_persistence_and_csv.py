@@ -2,7 +2,7 @@
 
 Run with `uv run --all-extras python examples/05_persistence_and_csv.py`.
 The default database and CSV live under the Git-ignored output/milestone2/.
-Set LUCA_DATABASE_URL only to a database intended for this example's writes.
+Set LUMBAGO_DATABASE_URL only to a database intended for this example's writes.
 """
 
 import argparse
@@ -11,7 +11,7 @@ from datetime import date
 from pathlib import Path
 from uuid import uuid4
 
-from luca import (
+from lumbago import (
     Account,
     AccountingService,
     AccountType,
@@ -24,7 +24,7 @@ from luca import (
     export_postings_csv,
     project_postings,
 )
-from luca.persistence.sqlalchemy import SqlAlchemyStore
+from lumbago.persistence.sqlalchemy import SqlAlchemyStore
 
 
 def main() -> None:
@@ -33,7 +33,7 @@ def main() -> None:
     output_dir = parser.parse_args().output_dir.resolve()
     output_dir.mkdir(parents=True, exist_ok=True)
     database_url = os.environ.get(
-        "LUCA_DATABASE_URL", f"sqlite+pysqlite:///{output_dir / 'luca.db'}"
+        "LUMBAGO_DATABASE_URL", f"sqlite+pysqlite:///{output_dir / 'lumbago.db'}"
     )
     entry_id = uuid4()
     store = SqlAlchemyStore(database_url)

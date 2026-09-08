@@ -6,7 +6,7 @@ from uuid import UUID, uuid4
 import pytest
 from pydantic import ValidationError
 
-from luca import (
+from lumbago import (
     Account,
     AccountType,
     AuditAction,

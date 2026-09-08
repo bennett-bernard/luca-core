@@ -2,12 +2,12 @@
 
 ## Project Structure & Module Organization
 
-Luca is a Python 3.12+ library using a `src/` layout. Public Pydantic models live
-in `src/luca/models/`, workflows in `services/`, storage contracts in
+Lumbago is a Python 3.12+ library using a `src/` layout. Public Pydantic models live
+in `src/lumbago/models/`, workflows in `services/`, storage contracts in
 `repositories/`, transactional adapters in `persistence/`, and posting/CSV
 adapters in `exports/`. SQLAlchemy rows are private implementation details.
 Versioned migrations are packaged under
-`src/luca/persistence/sqlalchemy/migrations/` so installed wheels can migrate.
+`src/lumbago/persistence/sqlalchemy/migrations/` so installed wheels can migrate.
 Keep tests under `tests/`, runnable walkthroughs under `examples/`, and longer
 design/operation notes under `docs/`. Root files contain project configuration.
 
@@ -17,12 +17,12 @@ design/operation notes under `docs/`. Root files contain project configuration.
 - `uv run --all-extras ruff check .` — lint source, tests, and examples.
 - `uv run --all-extras ruff format --check .` — verify formatting.
 - `uv run --all-extras mypy src` — run strict library type checks.
-- `uv run --all-extras pytest --cov=luca --cov-branch --cov-fail-under=100` — run
+- `uv run --all-extras pytest --cov=lumbago --cov-branch --cov-fail-under=100` — run
   tests and enforce full library statement/branch coverage.
 - `uv lock --check` and `uv build` — validate dependencies and build distributions.
 - `git status --short`, `git diff --check`, and `rg --files` — inspect changes.
 
-PostgreSQL integration tests require `LUCA_TEST_POSTGRES_URL` for a disposable
+PostgreSQL integration tests require `LUMBAGO_TEST_POSTGRES_URL` for a disposable
 database whose user can create schemas. Tests remove only their own uniquely
 named schemas. Without this variable PostgreSQL tests skip; do not describe
 that as PostgreSQL validation. Never test against production data.
@@ -31,7 +31,7 @@ that as PostgreSQL validation. Never test against production data.
 
 Use UTF-8, LF endings, trailing newlines, descriptive `snake_case` names, and
 Ruff's configured formatting and lint rules. Library code is strictly typed.
-Keep optional SQL dependencies out of the top-level `luca` import. Domain
+Keep optional SQL dependencies out of the top-level `lumbago` import. Domain
 models must not depend on ORM rows, sessions, or lazy relationships. Services
 and repositories never commit: callers own unit-of-work boundaries.
 

@@ -1,7 +1,7 @@
 [project]
-name = "luca-core"
+name = "lumbago-core"
 version = "0.2.0"
-description = "Foundational accounting library for the Luca framework"
+description = "Foundational accounting library for the Lumbago framework"
 readme = "README.md"
 authors = [
     { name = "bennett-bernard", email = "bennett.s.bernard@gmail.com" }
@@ -13,14 +13,14 @@ dependencies = [
 
 [project.optional-dependencies]
 sql = ["sqlalchemy>=2.0.43,<3", "alembic>=1.16,<2"]
-postgres = ["luca-core[sql]", "psycopg[binary]>=3.2,<4"]
+postgres = ["lumbago-core[sql]", "psycopg[binary]>=3.2,<4"]
 
 [build-system]
 requires = ["uv_build>=0.12.5,<0.13.0"]
 build-backend = "uv_build"
 
 [tool.uv.build-backend]
-module-name = "luca"
+module-name = "lumbago"
 
 [dependency-groups]
 dev = [
@@ -33,11 +33,11 @@ dev = [
 [tool.pytest.ini_options]
 addopts = ["--strict-config", "--strict-markers"]
 testpaths = ["tests"]
-markers = ["postgres: requires LUCA_TEST_POSTGRES_URL pointing at a disposable database"]
+markers = ["postgres: requires LUMBAGO_TEST_POSTGRES_URL pointing at a disposable database"]
 
 [tool.coverage.run]
 branch = true
-source = ["luca"]
+source = ["lumbago"]
 
 [tool.coverage.report]
 show_missing = true
