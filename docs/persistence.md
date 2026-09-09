@@ -1,8 +1,6 @@
 # Milestone 2: persistence decisions and operations
 
-This is the implemented contract for version 0.2, following the saved comments
-in `MILESTONE_2_PLAN.md`. It supersedes conflicting recommendations in that
-historical proposal; the user's original comments remain intact.
+This is the implemented persistence contract for version 0.2.
 
 ## Decisions
 
