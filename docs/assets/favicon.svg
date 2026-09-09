@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <title>Lumbago</title>
+  <rect width="1024" height="1024" fill="#fff"/>
+  <path fill="#a51624" transform="translate(-168)" d="
+    M 325 58 H 668 L 692 83 V 136 H 633 L 606 167
+    V 278 L 566 305 L 607 332 V 732 L 557 763 L 608 795
+    V 833 H 822 L 897 753 V 719 L 930 686 H 1067 V 719
+    L 1046 741 V 901 L 1067 922 V 932 L 1048 950 H 320
+    L 294 929 V 862 H 352 L 379 827 V 503 L 419 475
+    L 379 446 V 166 L 353 136 H 299 V 83 Z
+  "/>
+</svg>
